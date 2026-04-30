@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Menu extends Model
 {
-    protected $table = 'tbl_menu_list';
     protected $primaryKey = 'idtbl_menu_list';
     public $timestamps = false;
 
@@ -31,6 +30,11 @@ class Menu extends Model
         'displayorder' => 'integer',
         'status' => 'integer',
     ];
+
+    public function getTable()
+    {
+        return config('privilege-manager.database.menus_table', 'tbl_menu_list');
+    }
 
     /**
      * Get all privileges for this menu

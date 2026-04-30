@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserPrivilege extends Model
 {
-    protected $table = 'tbl_user_privilege';
     protected $primaryKey = 'idtbl_user_privilege';
     public $timestamps = false;
 
@@ -44,6 +43,11 @@ class UserPrivilege extends Model
         'status' => 'integer',
     ];
 
+    public function getTable()
+    {
+        return config('privilege-manager.database.privileges_table', 'tbl_user_privilege');
+    }
+
     /**
      * Get the menu this privilege belongs to
      */
@@ -60,7 +64,7 @@ class UserPrivilege extends Model
         return $this->belongsTo(
             config('privilege-manager.models.user', 'App\\Models\\User'),
             'tbl_user_idtbl_user',
-            'idtbl_user'
+            config('privilege-manager.database.users_primary_key', 'id')
         );
     }
 

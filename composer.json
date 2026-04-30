@@ -21,9 +21,9 @@
         "menu"
     ],
     "support": {
-        "issues": "https://github.com/thisa/laravel-privilege-manager/issues",
-        "source": "https://github.com/thisa/laravel-privilege-manager",
-        "docs": "https://github.com/thisa/laravel-privilege-manager#readme"
+        "issues": "https://github.com/STT196/laravel-privilege-manager/issues",
+        "source": "https://github.com/STT196/laravel-privilege-manager",
+        "docs": "https://github.com/STT196/laravel-privilege-manager#readme"
     },
     "require": {
         "php": "^8.1",

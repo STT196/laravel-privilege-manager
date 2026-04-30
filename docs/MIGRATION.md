@@ -6,13 +6,22 @@ Complete guide to migrating from your current privilege system to Laravel Privil
 
 If you're currently using a legacy privilege system, this guide shows how to migrate to Laravel Privilege Manager with minimal changes to your existing code.
 
+For fresh Laravel projects, you can install the package and publish its migrations:
+
+```bash
+composer require stt196/laravel-privilege-manager
+php artisan privilege-manager:install
+php artisan migrate
+```
+
 ## Migration Steps
 
 ### Step 1: Install the Package
 
 ```bash
-composer require thisa/laravel-privilege-manager
+composer require stt196/laravel-privilege-manager
 php artisan vendor:publish --provider="LaravelPrivilegeManager\Providers\PrivilegeManagerServiceProvider" --tag="privilege-manager-config"
+php artisan vendor:publish --provider="LaravelPrivilegeManager\Providers\PrivilegeManagerServiceProvider" --tag="privilege-manager-migrations"
 ```
 
 ### Step 2: Update User Model

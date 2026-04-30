@@ -17,6 +17,24 @@ Complete step-by-step guide to install and configure Laravel Privilege Manager.
 composer require stt196/laravel-privilege-manager
 ```
 
+If you're starting a fresh Laravel project, run the installer and migrate:
+
+```bash
+php artisan privilege-manager:install
+php artisan migrate
+```
+
+Then add the reusable trait to `App\Models\User`:
+
+```php
+use LaravelPrivilegeManager\Traits\HasPrivileges;
+
+class User extends Authenticatable
+{
+    use HasPrivileges;
+}
+```
+
 ### Step 2: Publish Configuration
 
 ```bash

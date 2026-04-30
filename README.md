@@ -19,6 +19,26 @@ A robust, security-hardened, and performance-optimized privilege/permission mana
 composer require stt196/laravel-privilege-manager
 ```
 
+### Fresh Laravel Projects
+
+If you're starting from a brand-new Laravel app, run the package installer and then migrate:
+
+```bash
+php artisan privilege-manager:install
+php artisan migrate
+```
+
+Then add the reusable trait to your `App\Models\User` model:
+
+```php
+use LaravelPrivilegeManager\Traits\HasPrivileges;
+
+class User extends Authenticatable
+{
+    use HasPrivileges;
+}
+```
+
 ### 2. Publish Configuration
 
 ```bash
@@ -29,7 +49,7 @@ This creates `config/privilege-manager.php` where you can customize behavior.
 
 ### 3. Update Your User Model
 
-Your User model must implement the `PrivilegeUserContract` interface:
+Your User model must implement the `PrivilegeUserContract` interface, or you can use the `HasPrivileges` trait shown above:
 
 ```php
 <?php

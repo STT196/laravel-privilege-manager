@@ -114,7 +114,9 @@ laravel-privilege-manager/
 
 1. **Install**
    ```bash
-   composer require thisa/laravel-privilege-manager
+   composer require stt196/laravel-privilege-manager
+   php artisan privilege-manager:install
+   php artisan migrate
    ```
 
 2. **Publish config**
