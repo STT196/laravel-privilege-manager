@@ -14,7 +14,7 @@ Complete step-by-step guide to install and configure Laravel Privilege Manager.
 ### Step 1: Install Package via Composer
 
 ```bash
-composer require thisa/laravel-privilege-manager
+composer require stt196/laravel-privilege-manager
 ```
 
 ### Step 2: Publish Configuration

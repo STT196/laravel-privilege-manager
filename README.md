@@ -16,7 +16,7 @@ A robust, security-hardened, and performance-optimized privilege/permission mana
 ### 1. Install via Composer
 
 ```bash
-composer require thisa/laravel-privilege-manager
+composer require stt196/laravel-privilege-manager
 ```
 
 ### 2. Publish Configuration

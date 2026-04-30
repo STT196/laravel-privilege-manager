@@ -1,13 +1,13 @@
 {
-    "name": "thisa/laravel-privilege-manager",
+    "name": "stt196/laravel-privilege-manager",
     "description": "A robust, security-hardened, and performance-optimized privilege/permission management system for Laravel applications with menu-based access control.",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://github.com/thisa/laravel-privilege-manager",
+    "homepage": "https://github.com/STT196/laravel-privilege-manager",
     "authors": [
         {
-            "name": "Thisa",
-            "email": "thisa@example.com"
+            "name": "STT196",
+            "email": "stt196@example.com"
         }
     ],
     "keywords": [
