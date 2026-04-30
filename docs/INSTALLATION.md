@@ -17,6 +17,32 @@ Complete step-by-step guide to install and configure Laravel Privilege Manager.
 composer require stt196/laravel-privilege-manager
 ```
 
+### Manual Install from GitHub (No Packagist)
+
+If Packagist is not available yet, tell Composer to read the package directly from your GitHub repository.
+
+Add this to your project `composer.json`:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/STT196/laravel-privilege-manager.git"
+        }
+    ],
+    "require": {
+        "stt196/laravel-privilege-manager": "dev-main"
+    }
+}
+```
+
+Then run:
+
+```bash
+composer update
+```
+
 If you're starting a fresh Laravel project, run the installer and migrate:
 
 ```bash

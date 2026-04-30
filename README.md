@@ -19,6 +19,30 @@ A robust, security-hardened, and performance-optimized privilege/permission mana
 composer require stt196/laravel-privilege-manager
 ```
 
+### Manual Install from GitHub
+
+If the package is not on Packagist yet, you can install it directly from GitHub using Composer VCS repositories:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/STT196/laravel-privilege-manager.git"
+        }
+    ],
+    "require": {
+        "stt196/laravel-privilege-manager": "dev-main"
+    }
+}
+```
+
+Then run:
+
+```bash
+composer update
+```
+
 ### Fresh Laravel Projects
 
 If you're starting from a brand-new Laravel app, run the package installer and then migrate:
