@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+/src export-ignore
+/tests export-ignore
+/.github export-ignore
+/setup-check.sh export-ignore
+/.editorconfig export-ignore
+/.gitattributes export-ignore

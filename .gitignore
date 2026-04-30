@@ -1,0 +1,15 @@
+vendor/
+node_modules/
+.DS_Store
+.env
+.env.*.php
+.env.example
+*.log
+storage/
+bootstrap/cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.phpunit.result.cache
