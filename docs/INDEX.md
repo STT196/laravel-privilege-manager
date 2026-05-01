@@ -1,4 +1,4 @@
-# Documentation Index
+﻿# Documentation Index
 
 Welcome to Laravel Privilege Manager documentation. Here's where to find everything you need.
 
@@ -44,9 +44,6 @@ Welcome to Laravel Privilege Manager documentation. Here's where to find everyth
 - Performance optimization (caching, batch operations)
 - Best practices
 - Monitoring & debugging
-- Performance benchmarks
-
-## 🛠️ Reference
 
 ### [Primary Key Configuration Guide](PRIMARY_KEY_CONFIGURATION.md)
 **Database identifier customization**
@@ -55,6 +52,11 @@ Welcome to Laravel Privilege Manager documentation. Here's where to find everyth
 - Legacy system migration
 - Troubleshooting
 - Quick reference table
+
+### Saving Privileges
+Use the package helper or service in [Installation Guide](INSTALLATION.md) to store privilege rows in `tbl_user_privilege`.
+
+## 🛠️ Reference
 
 ### API Reference
 See [README.md - API Reference](../README.md#api-reference) section for:
@@ -84,6 +86,7 @@ A production-ready privilege/permission management system for Laravel with:
 | Migrate from old system | [Migration Guide](MIGRATION.md) |
 | Understand security | [Security & Performance](SECURITY_AND_PERFORMANCE.md) |
 | Configure primary keys | [Primary Key Configuration](PRIMARY_KEY_CONFIGURATION.md) |
+| Save privileges | [Installation Guide](INSTALLATION.md) |
 | Check API docs | [README - API Reference](../README.md#api-reference) |
 | Configure settings | [README - Configuration](../README.md#configuration) |
 | Test the package | [Usage Examples - Testing](USAGE_EXAMPLES.md#testing-examples) |
@@ -119,6 +122,7 @@ hasAnyPrivilege($menuId, $actions)            // Has ANY privilege
 hasAllPrivileges($menuId, $actions)           // Has ALL privileges
 getUserAccessibleMenus()                      // Get accessible menus
 batchCheckPrivileges($checks)                 // Batch check
+saveUserPrivilege($user, $menuId, $attributes) // Save privilege
 clearUserPrivilegeCache($userId)              // Clear cache
 ```
 

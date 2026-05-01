@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use LaravelPrivilegeManager\Models\UserPrivilege;
 use LaravelPrivilegeManager\Models\Contracts\PrivilegeUserContract;
 
 class PrivilegeService
@@ -297,6 +298,41 @@ class PrivilegeService
     }
 
     /**
+     * Save or update a privilege record for a user and menu.
+     *
+     * @param mixed $user User model instance or user ID
+     * @param int $menuId Menu ID
+     * @param array $attributes Privilege attributes to store
+     * @return \LaravelPrivilegeManager\Models\UserPrivilege
+     */
+    public static function savePrivilege($user, $menuId, array $attributes = []): UserPrivilege
+    {
+        $userId = self::resolveUserId($user);
+
+        if (!$userId) {
+            throw new \InvalidArgumentException('A valid user ID or user model is required to save privileges.');
+        }
+
+        if (!is_numeric($menuId)) {
+            throw new \InvalidArgumentException('A valid menu ID is required to save privileges.');
+        }
+
+        $payload = self::normalizePrivilegePayload($attributes);
+
+        $privilege = UserPrivilege::updateOrCreate(
+            [
+                'tbl_user_idtbl_user' => (int) $userId,
+                'tbl_menu_list_idtbl_menu_list' => (int) $menuId,
+            ],
+            $payload
+        );
+
+        self::clearUserCache($userId);
+
+        return $privilege;
+    }
+
+    /**
      * Validate that user implements required contract
      *
      * @param mixed $user
@@ -305,6 +341,54 @@ class PrivilegeService
     private static function isValidUser($user): bool
     {
         return $user instanceof PrivilegeUserContract;
+    }
+
+    /**
+     * Resolve a user identifier from a model, auth contract, or scalar value.
+     *
+     * @param mixed $user
+     * @return int|null
+     */
+    private static function resolveUserId($user): ?int
+    {
+        if (is_numeric($user)) {
+            return (int) $user;
+        }
+
+        if (is_object($user)) {
+            if (method_exists($user, 'getAuthIdentifier')) {
+                return $user->getAuthIdentifier();
+            }
+
+            if (method_exists($user, 'getKey')) {
+                return $user->getKey();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Normalize privilege payload values.
+     *
+     * @param array $attributes
+     * @return array
+     */
+    private static function normalizePrivilegePayload(array $attributes): array
+    {
+        $defaults = [
+            'access_status' => 1,
+            'add' => 0,
+            'edit' => 0,
+            'statuschange' => 0,
+            'remove' => 0,
+            'status' => 1,
+        ];
+
+        return array_map(
+            static fn ($value) => is_bool($value) ? (int) $value : $value,
+            array_merge($defaults, $attributes)
+        );
     }
 
     /**

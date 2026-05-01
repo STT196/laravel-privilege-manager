@@ -17,4 +17,10 @@ class PackageStructureTest extends TestCase
         $router = $this->app['router'];
         $this->assertArrayHasKey('privilege', $router->getMiddleware());
     }
+
+    public function test_save_privilege_helper_is_available(): void
+    {
+        $this->assertTrue(function_exists('saveUserPrivilege'));
+        $this->assertTrue(method_exists(\LaravelPrivilegeManager\Services\PrivilegeService::class, 'savePrivilege'));
+    }
 }

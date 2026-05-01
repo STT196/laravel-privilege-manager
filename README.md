@@ -162,6 +162,38 @@ class User extends Model implements PrivilegeUserContract
 }
 ```
 
+### 4. Save Privileges into tbl_user_privilege
+
+Privilege assignments are stored in the `tbl_user_privilege` table through the package helper or service.
+
+```php
+use LaravelPrivilegeManager\Services\PrivilegeService;
+
+saveUserPrivilege(
+    $user,
+    7,
+    [
+        'access_status' => 1,
+        'add' => 1,
+        'edit' => 1,
+        'statuschange' => 0,
+        'remove' => 0,
+        'status' => 1,
+    ]
+);
+
+PrivilegeService::savePrivilege($user, 7, [
+    'access_status' => 1,
+    'add' => 1,
+    'edit' => 1,
+    'statuschange' => 0,
+    'remove' => 0,
+    'status' => 1,
+]);
+```
+
+After saving, the package reads privileges from the same table when you call the helper functions, middleware, or model methods, and it clears the user's privilege cache automatically.
+
 ## Quick Start
 
 ### Using Middleware (Recommended)

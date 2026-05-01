@@ -130,3 +130,18 @@ if (!function_exists('clearUserPrivilegeCache')) {
         PrivilegeService::clearUserCache($userId);
     }
 }
+
+if (!function_exists('saveUserPrivilege')) {
+    /**
+     * Save or update a privilege record for a user and menu.
+     *
+     * @param mixed $user User model instance or user ID
+     * @param int $menuId Menu ID
+     * @param array $attributes Privilege attributes
+     * @return \LaravelPrivilegeManager\Models\UserPrivilege
+     */
+    function saveUserPrivilege($user, $menuId, array $attributes = [])
+    {
+        return PrivilegeService::savePrivilege($user, $menuId, $attributes);
+    }
+}

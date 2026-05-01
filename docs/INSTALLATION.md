@@ -347,6 +347,36 @@ CREATE TABLE `tbl_user_privilege` (
 );
 ```
 
+### Saving Privileges into tbl_user_privilege
+
+Use the package helper or service to insert or update privilege rows in `tbl_user_privilege`.
+
+```php
+saveUserPrivilege(
+    $user,
+    7,
+    [
+        'access_status' => 1,
+        'add' => 1,
+        'edit' => 1,
+        'statuschange' => 0,
+        'remove' => 0,
+        'status' => 1,
+    ]
+);
+
+\LaravelPrivilegeManager\Services\PrivilegeService::savePrivilege($user, 7, [
+    'access_status' => 1,
+    'add' => 1,
+    'edit' => 1,
+    'statuschange' => 0,
+    'remove' => 0,
+    'status' => 1,
+]);
+```
+
+Once the record exists, the package reads access from the same `tbl_user_privilege` table for middleware checks, helper functions, and model methods, and clears the user's cache automatically.
+
 ### `tbl_menu_list` Table
 
 ```sql
