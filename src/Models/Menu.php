@@ -19,6 +19,15 @@ class Menu extends Model
     protected $primaryKey = 'idtbl_menu_list';
     public $timestamps = false;
 
+    /**
+     * Initialize the model by setting the primary key from config
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->primaryKey = config('privilege-manager.database.menus_primary_key', 'idtbl_menu_list');
+    }
+
     protected $fillable = [
         'menuname',
         'menuurl',

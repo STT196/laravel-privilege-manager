@@ -23,6 +23,15 @@ class UserPrivilege extends Model
     protected $primaryKey = 'idtbl_user_privilege';
     public $timestamps = false;
 
+    /**
+     * Initialize the model by setting the primary key from config
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->primaryKey = config('privilege-manager.database.privileges_primary_key', 'idtbl_user_privilege');
+    }
+
     protected $fillable = [
         'tbl_user_idtbl_user',
         'tbl_menu_list_idtbl_menu_list',

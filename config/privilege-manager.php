@@ -25,7 +25,9 @@ return [
         'users_table' => env('PRIVILEGE_USERS_TABLE', 'users'),
         'users_primary_key' => env('PRIVILEGE_USERS_PRIMARY_KEY', 'id'),
         'menus_table' => env('PRIVILEGE_MENUS_TABLE', 'tbl_menu_list'),
+        'menus_primary_key' => env('PRIVILEGE_MENUS_PRIMARY_KEY', 'idtbl_menu_list'),
         'privileges_table' => env('PRIVILEGE_PRIVILEGES_TABLE', 'tbl_user_privilege'),
+        'privileges_primary_key' => env('PRIVILEGE_PRIVILEGES_PRIMARY_KEY', 'idtbl_user_privilege'),
     ],
 
     /*

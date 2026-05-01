@@ -48,6 +48,14 @@ Welcome to Laravel Privilege Manager documentation. Here's where to find everyth
 
 ## 🛠️ Reference
 
+### [Primary Key Configuration Guide](PRIMARY_KEY_CONFIGURATION.md)
+**Database identifier customization**
+- Configure `idtbl_user_privilege` and other primary keys
+- Environment variable setup
+- Legacy system migration
+- Troubleshooting
+- Quick reference table
+
 ### API Reference
 See [README.md - API Reference](../README.md#api-reference) section for:
 - Service methods
@@ -75,6 +83,7 @@ A production-ready privilege/permission management system for Laravel with:
 | See code examples | [Usage Examples](USAGE_EXAMPLES.md) |
 | Migrate from old system | [Migration Guide](MIGRATION.md) |
 | Understand security | [Security & Performance](SECURITY_AND_PERFORMANCE.md) |
+| Configure primary keys | [Primary Key Configuration](PRIMARY_KEY_CONFIGURATION.md) |
 | Check API docs | [README - API Reference](../README.md#api-reference) |
 | Configure settings | [README - Configuration](../README.md#configuration) |
 | Test the package | [Usage Examples - Testing](USAGE_EXAMPLES.md#testing-examples) |
