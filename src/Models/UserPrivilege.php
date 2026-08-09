@@ -41,6 +41,9 @@ class UserPrivilege extends Model
         'statuschange',
         'remove',
         'status',
+        'approvestatus',
+        'checkstatus',
+        'updatedatetime',
     ];
 
     protected $casts = [
@@ -49,6 +52,8 @@ class UserPrivilege extends Model
         'edit' => 'boolean',
         'statuschange' => 'boolean',
         'remove' => 'boolean',
+        'approvestatus' => 'boolean',
+        'checkstatus' => 'boolean',
         'status' => 'integer',
     ];
 

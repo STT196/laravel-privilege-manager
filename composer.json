@@ -36,7 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "LaravelPrivilegeManager\\": "src/"
+            "LaravelPrivilegeManager\\": "src/",
+            "LaravelPrivilegeManager\\Database\\Seeders\\": "database/seeders/"
         },
         "files": [
             "src/Helpers/privilege_helpers.php"

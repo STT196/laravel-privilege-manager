@@ -20,9 +20,47 @@ class PrivilegeService
     private const RATE_LIMIT_ATTEMPTS = 1000;
 
     /**
+     * In-memory cache store for 'request' driver mode.
+     * Lives for the duration of the current request only.
+     */
+    protected static array $inMemoryStore = [];
+
+    /**
      * Valid actions
      */
     private const VALID_ACTIONS = ['add', 'edit', 'statuschange', 'remove'];
+
+    /**
+     * Get the configured caching driver.
+     *
+     * Options:
+     *   'redis'   → persist across requests via Laravel Cache (default)
+     *   'request' → in-memory array, cleared at end of each request
+     *   'none'    → no caching, always hit the database (debug only)
+     */
+    private static function cacheDriver(): string
+    {
+        return config('privilege-manager.cache.driver', 'redis');
+    }
+
+    /**
+     * Cache helper that routes to the appropriate store based on config.
+     *
+     * @param string $key
+     * @param int|null $ttl
+     * @param callable $callback
+     * @return mixed
+     */
+    private static function remember(string $key, ?int $ttl, callable $callback): mixed
+    {
+        $ttl ??= (int) config('privilege-manager.cache.ttl', self::CACHE_TTL);
+
+        return match (self::cacheDriver()) {
+            'none'    => $callback(),
+            'request' => self::$inMemoryStore[$key] ??= $callback(),
+            default   => Cache::remember($key, $ttl, $callback),
+        };
+    }
 
     /**
      * Check if the authenticated user has privilege for a menu and action
@@ -127,12 +165,12 @@ class PrivilegeService
      */
     public static function getPrivilegeArray($menuId): array
     {
-        // Check cache first
+        // Check cache first (respects cache driver config)
         $cacheKey = self::CACHE_PREFIX . 'array_' . Auth::id() . '_' . $menuId;
-        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($menuId) {
+        return self::remember($cacheKey, self::CACHE_TTL, function () use ($menuId) {
             $privileges = self::getPrivileges($menuId);
 
-            if (!$privileges) {
+            if (!$privileges || empty($privileges->access_status)) {
                 return [
                     'add' => false,
                     'edit' => false,
@@ -147,7 +185,7 @@ class PrivilegeService
                 'edit' => (bool) $privileges->edit,
                 'statuschange' => (bool) $privileges->statuschange,
                 'remove' => (bool) $privileges->remove,
-                'canAccess' => true
+                'canAccess' => (bool) $privileges->access_status
             ];
         });
     }
@@ -165,9 +203,9 @@ class PrivilegeService
             return collect([]);
         }
 
-        $cacheKey = self::CACHE_PREFIX . 'menus_' . $user->getAuthIdentifier();
+        $cacheKey = self::CACHE_PREFIX . 'accessible_menus_' . $user->getAuthIdentifier();
         
-        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($user) {
+        return self::remember($cacheKey, self::CACHE_TTL, function () use ($user) {
             try {
                 return $user->privileges()
                     ->with('menu')
@@ -288,9 +326,18 @@ class PrivilegeService
             return;
         }
 
-        Cache::forget(self::CACHE_PREFIX . 'menus_' . $userId);
-        Cache::forget(self::CACHE_PREFIX . 'full_privileges_' . $userId);
         Cache::forget(self::CACHE_PREFIX . 'accessible_menus_' . $userId);
+        Cache::forget(self::CACHE_PREFIX . 'menus_' . $userId);
+        Cache::forget(self::CACHE_PREFIX . 'full_' . $userId);
+
+        // Also clear in-memory store (for 'request' driver mode)
+        $prefix = self::CACHE_PREFIX;
+        self::$inMemoryStore = array_filter(
+            self::$inMemoryStore,
+            fn(string $key) => !str_starts_with($key, $prefix . 'array_' . $userId)
+                && !str_starts_with($key, $prefix . 'accessible_menus_' . $userId),
+            ARRAY_FILTER_USE_KEY
+        );
         
         // Clear all menu privilege arrays for this user
         // This is less efficient but ensures consistency

@@ -76,11 +76,17 @@ trait HasPrivileges
 
     /**
      * Clear privilege cache for the user.
+     * Also clears the service-level in-memory store for 'request' driver mode.
      */
     public function clearPrivilegeCache(): void
     {
         Cache::forget($this->privilegeCacheKey('full'));
         Cache::forget($this->privilegeCacheKey('menus'));
+
+        // Notify PrivilegeService to also clear its in-memory cache
+        if (class_exists(\LaravelPrivilegeManager\Services\PrivilegeService::class)) {
+            \LaravelPrivilegeManager\Services\PrivilegeService::clearUserCache($this->getKey());
+        }
     }
 
     /**

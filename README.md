@@ -5,11 +5,11 @@ A robust, security-hardened, and performance-optimized privilege/permission mana
 ## Features
 
 ✅ **Menu-Based Access Control** - Control access at the menu level with granular actions  
-✅ **Security Hardened** - Rate limiting, input validation, logging, and injection prevention  
-✅ **Performance Optimized** - Multi-level caching, batch operations, and query optimization  
-✅ **Easy Integration** - Drop-in package for existing Laravel apps  
-✅ **Flexible Authorization** - Middleware, helpers, contracts, and manual checks  
-✅ **Production Ready** - Thoroughly tested and documented  
+✅ **Security Hardened** - Rate limiting, input validation, logging, access_status enforcement, and injection prevention  
+✅ **Performance Optimized** - Multi-driver caching (redis/request/none), batch operations, and query optimization  
+✅ **Easy Integration** - One-command install with auto-seeded .env, migrations, and default menus  
+✅ **Flexible Authorization** - Middleware, helpers, Blade directives, contracts, and manual checks  
+✅ **Production Ready** - Battle-tested in real-world SFA/distribution management systems  
 
 ## Installation
 
@@ -45,12 +45,18 @@ composer update
 
 ### Fresh Laravel Projects
 
-If you're starting from a brand-new Laravel app, run the package installer and then migrate:
+If you're starting from a brand-new Laravel app, a single command handles everything:
 
 ```bash
 php artisan privilege-manager:install
-php artisan migrate
 ```
+
+This will:
+1. Publish `config/privilege-manager.php`
+2. Publish package migrations
+3. Auto-seed 11 `PRIVILEGE_*` variables into your `.env`
+4. Run migrations — creates `tbl_menu_list` and `tbl_user_privilege` tables
+5. Seed 3 default menu records (User Privileges, User Type, User Account)
 
 Then add the reusable trait to your `App\Models\User` model:
 
@@ -178,6 +184,8 @@ saveUserPrivilege(
         'edit' => 1,
         'statuschange' => 0,
         'remove' => 0,
+        'approvestatus' => 0,
+        'checkstatus' => 0,
         'status' => 1,
     ]
 );
@@ -188,6 +196,8 @@ PrivilegeService::savePrivilege($user, 7, [
     'edit' => 1,
     'statuschange' => 0,
     'remove' => 0,
+    'approvestatus' => 0,
+    'checkstatus' => 0,
     'status' => 1,
 ]);
 ```
@@ -387,8 +397,9 @@ Edit `config/privilege-manager.php` to customize:
 ```php
 return [
     'cache' => [
+        'driver' => 'redis',  // 'redis', 'request', or 'none'
         'enabled' => true,
-        'ttl' => 3600, // Cache for 1 hour
+        'ttl' => 86400,       // 24 hours
     ],
     
     'rate_limit' => [
@@ -421,21 +432,27 @@ return [
 Prevents abuse of privilege checking endpoints. Configurable per environment.
 
 ### ✓ Input Validation
-All inputs are validated to prevent injection attacks.
+All inputs are validated to prevent injection attacks. Invalid actions are logged.
+
+### ✓ access_status Enforcement
+Both `check()` and `getPrivilegeArray()` require `access_status = 1` — a menu with action flags but `access_status = 0` returns `false` for everything.
 
 ### ✓ Comprehensive Logging
-All privilege denials and suspicious activities are logged.
+All privilege checks, denials, and suspicious activities are logged with user/menu/action context.
 
 ### ✓ Caching Strategy
-Multi-level caching prevents database hammering while maintaining accuracy.
+Multi-driver caching: `redis` (persistent), `request` (in-memory per request), or `none` (debug). Prevents database hammering while maintaining accuracy.
 
 ### ✓ IP Validation (Optional)
 Can optionally check IP to prevent token theft.
 
 ## Performance Features
 
-### ✓ Multi-Level Caching
-User privileges are cached for 1 hour (configurable).
+### ✓ Multi-Driver Caching
+User privileges are cached for 24 hours (configurable). Choose `redis` for persistence, `request` for in-memory-only, or `none` for debugging.
+
+### ✓ Auto-Cleared Caches
+`clearUserCache()` invalidates all cache layers — service, trait, and in-memory — with a single call after privilege changes.
 
 ### ✓ Query Optimization
 Minimal queries per check, with efficient relationship loading.

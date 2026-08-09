@@ -37,6 +37,14 @@ class CheckPrivilege
                 'ip' => $request->ip(),
                 'url' => $request->path(),
             ]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthenticated.'
+                ], 401);
+            }
+
             return redirect()->route('login')->with('error', 'Please login to continue.');
         }
 

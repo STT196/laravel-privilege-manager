@@ -34,12 +34,18 @@ return [
     |--------------------------------------------------------------------------
     | Cache Configuration
     |--------------------------------------------------------------------------
-    | Control how privilege data is cached for performance
+    | Control how privilege data is cached for performance.
+    |
+    | driver options:
+    |   'redis'   → persist across requests via Laravel Cache (default)
+    |   'request' → in-memory array per request (no persistent storage)
+    |   'none'    → no caching, always hit DB (debugging only)
     |
     */
     'cache' => [
+        'driver' => env('PRIVILEGE_CACHE_DRIVER', 'redis'),
         'enabled' => env('PRIVILEGE_CACHE_ENABLED', true),
-        'ttl' => env('PRIVILEGE_CACHE_TTL', 3600), // 1 hour in seconds
+        'ttl' => env('PRIVILEGE_CACHE_TTL', 86400), // 24 hours in seconds
         'prefix' => 'privilege_',
     ],
 

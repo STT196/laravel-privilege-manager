@@ -10,10 +10,12 @@ return new class extends Migration
     {
         Schema::create(config('privilege-manager.database.menus_table', 'tbl_menu_list'), function (Blueprint $table) {
             $table->increments('idtbl_menu_list');
-            $table->string('menuname', 255);
+            $table->string('menu', 255);
             $table->string('menuurl', 255)->nullable();
             $table->integer('displayorder')->default(0);
             $table->tinyInteger('status')->default(1);
+            $table->timestamp('insertdatetime')->nullable();
+            $table->timestamp('updatedatetime')->nullable();
         });
     }
 

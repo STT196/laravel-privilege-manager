@@ -23,6 +23,9 @@ return new class extends Migration
             $table->tinyInteger('statuschange')->default(0);
             $table->tinyInteger('remove')->default(0);
             $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('approvestatus')->default(0);
+            $table->tinyInteger('checkstatus')->default(0);
+            $table->timestamp('updatedatetime')->nullable();
 
             $table->foreign('tbl_user_idtbl_user')
                 ->references($usersPrimaryKey)
